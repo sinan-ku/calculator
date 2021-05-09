@@ -13,6 +13,6 @@ interface Calculator {
             "*" -> arg1.toDouble() * arg2.toDouble()
             "/" -> arg1.toDouble() / arg2.toDouble()
             else -> throw RuntimeException()
-        }.toInt().toString()
+        }.toString()
     }
 }
