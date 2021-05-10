@@ -25,7 +25,7 @@ object InfixCalculator : Calculator {
                     while(paranthesesCounter > 0) {
                         val arg = arguments[index+1]
                         newExpression = "$newExpression $arg"
-                        paranthesesCounter = countParantheses(arg, paranthesesCounter)
+                        paranthesesCounter = countParanthesesToBeClosed(arg, paranthesesCounter)
                         index++
                     }
                     argumentsStack.push(this.calculate(newExpression))
@@ -45,7 +45,7 @@ object InfixCalculator : Calculator {
         return argumentsStack.pop()
     }
 
-    private fun countParantheses(arg: String?, paranthesesCounter: Int): Int {
+    private fun countParanthesesToBeClosed(arg: String?, paranthesesCounter: Int): Int {
         var paranthesesCounter1 = paranthesesCounter
         if (arg == "(") {
             paranthesesCounter1++
