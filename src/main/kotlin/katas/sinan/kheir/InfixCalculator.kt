@@ -25,11 +25,7 @@ object InfixCalculator : Calculator {
                     while(paranthesesCounter > 0) {
                         val arg = arguments[index+1]
                         newExpression = "$newExpression $arg"
-                        if(arg == "(") {
-                            paranthesesCounter++
-                        } else if(arg == ")") {
-                            paranthesesCounter--
-                        }
+                        paranthesesCounter = countParantheses(arg, paranthesesCounter)
                         index++
                     }
                     argumentsStack.push(this.calculate(newExpression))
@@ -37,23 +33,38 @@ object InfixCalculator : Calculator {
                 arguments[index] == ")" -> {
                     if(argumentsStack.size == 1)
                         return argumentsStack.pop()
-                    val arg1 = argumentsStack.pop()
-                    val op = argumentsStack.pop()
-                    val arg2 = argumentsStack.pop()
-                    argumentsStack.push(executeOperation(op, arg1, arg2))
-                    if(paranthesesStack.peek() == "(")
-                        paranthesesStack.pop()
+                    executeTopMostOperationOnStack(argumentsStack)
+                    popOpenParanthesesFromStack(paranthesesStack)
                 }
-                arguments[index].isANumber() -> {
-                    argumentsStack.push(arguments[index])
-                }
-                arguments[index].isAnOperator() -> {
+                arguments[index].isANumber() || arguments[index].isAnOperator() -> {
                     argumentsStack.push(arguments[index])
                 }
             }
             index++
         }
         return argumentsStack.pop()
+    }
+
+    private fun countParantheses(arg: String?, paranthesesCounter: Int): Int {
+        var paranthesesCounter1 = paranthesesCounter
+        if (arg == "(") {
+            paranthesesCounter1++
+        } else if (arg == ")") {
+            paranthesesCounter1--
+        }
+        return paranthesesCounter1
+    }
+
+    private fun popOpenParanthesesFromStack(paranthesesStack: Stack<String>) {
+        if (paranthesesStack.peek() == "(")
+            paranthesesStack.pop()
+    }
+
+    private fun executeTopMostOperationOnStack(argumentsStack: Stack<String>) {
+        val arg1 = argumentsStack.pop()
+        val op = argumentsStack.pop()
+        val arg2 = argumentsStack.pop()
+        argumentsStack.push(executeOperation(op, arg1, arg2))
     }
 }
 
