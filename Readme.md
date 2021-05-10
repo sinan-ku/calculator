@@ -4,7 +4,7 @@ Small app that exposes an HTTP endpoint to run calculations with prefix & infix 
  
 ## How to build & run?
 ### Dependencies
-Docker 
+Docker
 
 Project comes with a Dockerfile & a makefile that lets you run: 
 
